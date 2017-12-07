@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>UdaciFeeds</title>
+        <title>Milwaukee Breweries</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,700">
         <link rel="stylesheet" href="css/style.css">
@@ -15,42 +15,44 @@
         <nav id="menu" class="menu">
         <!-- Section with links -->
           <section class="menu-section">
-            <h3 class="menu-section-title">Menu Section</h3>
-            <ul class="menu-section-list">
-            <li><a href="" target="_blank">Menu Item</a></li>
-            <li><a href="" target="_blank">Menu Item</a></li>
-            <li><a href="" target="_blank">Menu Item</a></li>
-            </ul>
-          </section>
+            <h3 class="menu-section-title">Milwaukee Breweries</h3>
+            <div class="filterbox">
+<!--                   <a class="active" href="#home">FIlter Results</a> -->
+                  <div class="search-container">
+<!--                     <div class="innerdiv"> -->
+                        <form action="/action_page.php">
+                            <input type="text" placeholder="Filter by..." name="search">
+                            <img src="img/filtericon.svg" class="filtericon">
+                        </form>
+<!--                     </div> -->
+                  </div>
+            </div>
 
-        <!-- Section with links -->          <section class="menu-section">
-            <h3 class="menu-section-title">Menu Section</h3>
             <ul class="menu-section-list">
-            <li><a href="" target="_blank">Menu Item</a></li>
-            <li><a href="" target="_blank">Menu Item</a></li>
-            <li><a href="" target="_blank">Menu Item</a></li>
+                <li><a href="" target="_blank">Lakefront Brewery</a></li>
+                <li><a href="" target="_blank">Sprecher Brewery</a></li>
+                <li><a href="" target="_blank">Big Head Brewery</a></li>
+                <li><a href="" target="_blank">Brenner Brewery</a></li>
+                <li><a href="" target="_blank">Mob Craft Brewery</a></li>
             </ul>
           </section>
         </nav>
 
-
         <main id="main" class="panel">
 
-
         <header class="panel-header">
+            <!-- Hamburger -->
             <svg class="svg-hamburger js-slideout-toggle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M92.03 25h-84c-1.66 0-3-1.34-3-3V8c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.66-1.34 3-3 3zM92.03 59.94h-84c-1.66 0-3-1.34-3-3v-14c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.65-1.34 3-3 3zM92.03 94.88h-84c-1.66 0-3-1.35-3-3v-14c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.65-1.34 3-3 3z"/></svg>
-            <h1 class="title">Milwaukee Breweries</h1>
         </header>
 
         <!-- Google Map Section -->
           <div class="panel-demo">
             <iframe width="500%" height="450" frameborder="0" style="border:0" src="https://www.openstreetmap.org/export/embed.html?bbox=-58.404114246368415%2C-34.610764703773604%2C-58.38765621185302%2C-34.597924672421&amp;layer=mapquest&amp;marker=-34.6043537670987%2C-58.39587450027466"></iframe>
-
-          <footer class="panel-footer">
-          </footer>
+          </div>
         </main>
         <!-- Load Slideout -->
         <script src="js/dist/slideout.min.js"></script>
         <script src="js/slider.js"></script>
+        <
     </body>
 </html>
