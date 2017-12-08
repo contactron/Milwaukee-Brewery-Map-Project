@@ -190,3 +190,17 @@ body {
  display: block;
 }
 
+
+#map {
+  bottom:0px;
+  height: 100%;
+  left: 362px;
+  position: absolute;
+  right: 0px;
+}
+
+#pano {
+  width: 200px;
+  height: 200px;
+}
+
