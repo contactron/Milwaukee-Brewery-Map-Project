@@ -29,12 +29,8 @@
                   </div>
             </div>
 
-            <ul class="menu-section-list">
-                <li><a href="" target="_blank">Lakefront Brewery</a></li>
-                <li><a href="" target="_blank">Sprecher Brewery</a></li>
-                <li><a href="" target="_blank">Big Head Brewery</a></li>
-                <li><a href="" target="_blank">Brenner Brewery</a></li>
-                <li><a href="" target="_blank">Mob Craft Brewery</a></li>
+            <ul data-bind="foreach: breweryList" class="menu-section-list">
+                <li data-bind="text: breweryName, click: $parent.changeCat""></li>
             </ul>
           </section>
         </nav>
@@ -60,7 +56,8 @@
         <!-- Load Slideout -->
         <script src="js/dist/slideout.min.js"></script>
         <script src="js/slider.js"></script>
-
+        <!-- Load Knockout -->
+        <script src="js/knockout-3.4.2.js"></script>
         <!-- Load Core Javascript -->
         <script src="js/mb.js"></script>
         <

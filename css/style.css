@@ -17,18 +17,6 @@ body,
   background-image: linear-gradient(145deg, #1D1F20, #404348);
 }
 
-a {
-  text-decoration: none;
-}
-
-.menu a {
-  color: #fff;
-}
-
-.menu a:hover {
-  text-decoration: underline;
-}
-
 .menu-section {
   margin: 25px 0;
 }
@@ -48,12 +36,13 @@ a {
   list-style:none;
 }
 
-.menu-section-list a {
+.menu-section-list li {
   display: block;
   padding: 10px 20px;
+  color: #fff;
 }
 
-.menu-section-list a:hover {
+.menu-section-list li:hover {
   background-color: rgba(255, 255, 255, 0.1);
   text-decoration: none;
 }

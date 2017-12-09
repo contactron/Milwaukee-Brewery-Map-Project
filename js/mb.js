@@ -1,38 +1,79 @@
-var city = "Milwaukee, WI";
 
-var breweries = [
+// JSON data for breweries
+
+var initialBreweries = [
     {
-        "brewery_name": "Name 1",
-        "placeid": "PlaceID 1",
-        "beer_id": "BeerID 1",
-        "visible": true
+        breweryName: "Big Head Brewing Co.",
+        placeid: 'ChIJGQGhIx8bBYgRKKgwMcNyCqE',
+        beer_id: "BeerID",
+        visible: true
     },
     {
-        "brewery_name": "Name 2",
-        "placeid": "PlaceID 2",
-        "beer_id": "BeerID 2",
-        "visible": true
+        breweryName: 'Brenner Brewing Co.',
+        placeid: 'ChIJaXyDNJQZBYgRvh2nJNFu0wA',
+        beerid: 'BeerID',
+        visible: true
     },
     {
-        "brewery_name": "Name 3",
-        "placeid": "PlaceID 3",
-        "beer_id": "BeerID 3",
-        "visible": true
+        breweryName: 'Water Street Brewery',
+        placeid: 'ChIJH3PwhwwZBYgRCTpXjHjAuAo',
+        beerid: 'BeerID',
+        visible: true
     },
     {
-        "brewery_name": "Name 4",
-        "placeid": "PlaceID 4",
-        "beer_id": "BeerID 4",
-        "visible": true
+        breweryName: 'Lakefront Brewery',
+        placeid: 'ChIJkWA1FRcZBYgR7F7GEpN_rno',
+        beerid: 'BeerID',
+        visible: true
     },
     {
-        "brewery_name": "Name 5",
-        "placeid": "PlaceID 5",
-        "beer_id": "BeerID 5",
-        "visible": true
+        breweryName: 'Milwaukee Brewing Company',
+        placeid: 'ChIJj3pG4L0ZBYgRo0K6RMvwvYU',
+        beerid: 'BeerID',
+        visible: true
+    },
+    {
+        breweryName: 'Mob Craft Brewery',
+        placeid: 'ChIJlwhWk5YZBYgRFnUdoyba-_Q',
+        beerid: 'BeerID',
+        visible: true
+    },
+    {
+        breweryName: 'Sprecher Brewing Co.',
+        placeid: 'ChIJeVHsipYeBYgR4WMnS3-jVN4',
+        beerid: 'BeerID',
+        visible: true
     }
 ];
 
+// Brewery Constructor - takes brewery json and creates object with ko observables
+
+var Brewery = function (data) {
+  this.breweryName = ko.observable(data.breweryName);
+  this.placeid = ko.observable(data.placeid);
+  this.beerid = ko.observable(data.beerid);
+  this.visible = ko.observable(data.visible);
+};
+
+// View model
+
+var ViewModel = function () {
+  var self = this;
+
+  // Creates array of breweries instances. Uses the initialBreweries json and
+  // Brewery constructor to create
+  this.breweryList = ko.observableArray([]);
+  initialBreweries.forEach(function(breweryItem) {
+    self.breweryList.push(new Brewery(breweryItem));
+    });
+  // Need to add an unclicked state. No brewery selected.
+  // this.currentBrewery = ko.observable(this.breweryList()[0]);
+  // this.changeBrewery = function (clickedBrewery) {
+  //   self.currentCat(clickedcat);
+  // };
+};
+
+ko.applyBindings(new ViewModel());
 
 
 
