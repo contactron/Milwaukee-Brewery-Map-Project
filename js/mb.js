@@ -1,45 +1,52 @@
-
+// Model Section
 // JSON data for breweries
 
 var initialBreweries = [
     {
-        breweryName: "Big Head Brewing Co.",
+        breweryName: 'Big Head Brewing Co.',
+        location: {lat: 43.044613, lng: -87.990269},
         placeid: 'ChIJGQGhIx8bBYgRKKgwMcNyCqE',
         beer_id: "BeerID",
         visible: true
     },
     {
         breweryName: 'Brenner Brewing Co.',
+        location: {lat: 43.023950, lng: -87.916604},
         placeid: 'ChIJaXyDNJQZBYgRvh2nJNFu0wA',
         beerid: 'BeerID',
         visible: true
     },
     {
         breweryName: 'Water Street Brewery',
+        location: {lat: 43.044783, lng: -87.911197},
         placeid: 'ChIJH3PwhwwZBYgRCTpXjHjAuAo',
         beerid: 'BeerID',
         visible: true
     },
     {
         breweryName: 'Lakefront Brewery',
+        location: {lat: 43.054726, lng: -87.905287},
         placeid: 'ChIJkWA1FRcZBYgR7F7GEpN_rno',
         beerid: 'BeerID',
         visible: true
     },
     {
         breweryName: 'Milwaukee Brewing Company',
+        location: {lat: 43.024902, lng: -87.913027},
         placeid: 'ChIJj3pG4L0ZBYgRo0K6RMvwvYU',
         beerid: 'BeerID',
         visible: true
     },
     {
         breweryName: 'Mob Craft Brewery',
+        location: {lat: 43.026082, lng: -87.917236},
         placeid: 'ChIJlwhWk5YZBYgRFnUdoyba-_Q',
         beerid: 'BeerID',
         visible: true
     },
     {
         breweryName: 'Sprecher Brewing Co.',
+        location: {lat: 43.099650, lng: -87.919663},
         placeid: 'ChIJeVHsipYeBYgR4WMnS3-jVN4',
         beerid: 'BeerID',
         visible: true
@@ -73,12 +80,11 @@ var ViewModel = function () {
   // };
 };
 
-ko.applyBindings(new ViewModel());
 
 
 
-// UDACITY CODE
 
+// Google Map Section
 
 var map;
 
@@ -89,40 +95,17 @@ var markers = [];
 // over the number of places that show.
 var placeMarkers = [];
 
-
 function initMap() {
 
     // Constructor creates a new map - only center and zoom are required.
     map = new google.maps.Map(document.getElementById('map'), {
+      // Milwaukee lat lngs
       center: {lat: 43.038902, lng: -87.906471},
       zoom: 13,
       mapTypeControl: false
     });
 
-    // These are the real estate listings that will be shown to the user.
-    // Normally we'd have these in a database instead.
-    var locations = [
-      {title: 'Park Ave Penthouse', location: {lat: 40.7713024, lng: -73.9632393}},
-      {title: 'Chelsea Loft', location: {lat: 40.7444883, lng: -73.9949465}},
-      {title: 'Union Square Open Floor Plan', location: {lat: 40.7347062, lng: -73.9895759}},
-      {title: 'East Village Hip Studio', location: {lat: 40.7281777, lng: -73.984377}},
-      {title: 'TriBeCa Artsy Bachelor Pad', location: {lat: 40.7195264, lng: -74.0089934}},
-      {title: 'Chinatown Homey Space', location: {lat: 40.7180628, lng: -73.9961237}}
-    ];
-
-    var largeInfowindow = new google.maps.InfoWindow();
-
-    // Initialize the drawing manager.
-    var drawingManager = new google.maps.drawing.DrawingManager({
-      drawingMode: google.maps.drawing.OverlayType.POLYGON,
-      drawingControl: true,
-      drawingControlOptions: {
-        position: google.maps.ControlPosition.TOP_LEFT,
-        drawingModes: [
-          google.maps.drawing.OverlayType.POLYGON
-        ]
-      }
-});
+var largeInfowindow = new google.maps.InfoWindow();
 
 // Style the markers a bit. This will be our listing marker icon.
 var defaultIcon = makeMarkerIcon('0091ff');
@@ -131,11 +114,11 @@ var defaultIcon = makeMarkerIcon('0091ff');
 // mouses over the marker.
 var highlightedIcon = makeMarkerIcon('FFFF24');
 
-// The following group uses the location array to create an array of markers on initialize.
-for (var i = 0; i < locations.length; i++) {
+// Create markers for breweries
+for (var i = 0; i < initialBreweries.length; i++) {
   // Get the position from the location array.
-  var position = locations[i].location;
-  var title = locations[i].title;
+  var position = initialBreweries[i].location;
+  var title = initialBreweries[i].breweryName;
   // Create a marker per location, and put into markers array.
   var marker = new google.maps.Marker({
     position: position,
@@ -144,6 +127,8 @@ for (var i = 0; i < locations.length; i++) {
     icon: defaultIcon,
     id: i
   });
+
+
   // Push the marker to our array of markers.
   markers.push(marker);
   // Create an onclick event to open the large infowindow at each marker.
@@ -211,13 +196,13 @@ if (infowindow.marker != marker) {
 
 // This function will loop through the markers array and display them all.
 function showListings() {
-var bounds = new google.maps.LatLngBounds();
-// Extend the boundaries of the map for each marker and display the marker
-for (var i = 0; i < markers.length; i++) {
-  markers[i].setMap(map);
-  bounds.extend(markers[i].position);
-}
-map.fitBounds(bounds);
+  var bounds = new google.maps.LatLngBounds();
+  // Extend the boundaries of the map for each marker and display the marker
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+    bounds.extend(markers[i].position);
+  }
+  map.fitBounds(bounds);
 }
 
 // This function will loop through the listings and hide them all.
@@ -241,19 +226,6 @@ var markerImage = new google.maps.MarkerImage(
 return markerImage;
 }
 
-
-// This function fires when the user selects a searchbox picklist item.
-// It will do a nearby search using the selected query string or place.
-function searchBoxPlaces(searchBox) {
-hideMarkers(placeMarkers);
-var places = searchBox.getPlaces();
-if (places.length == 0) {
-  window.alert('We did not find any places matching that search!');
-} else {
-// For each place, get the icon, name and location.
-  createMarkersForPlaces(places);
-}
-}
 
 // This function creates markers for each place found in either places search.
 function createMarkersForPlaces(places) {
@@ -297,11 +269,4 @@ for (var i = 0; i < places.length; i++) {
 map.fitBounds(bounds);
 }
 
-
-
-
-
-
-
-
-
+ko.applyBindings(new ViewModel());
