@@ -12,10 +12,6 @@ body {
 
 body,
 
-.panel {
-  background-color: #fff;
-}
-
 .menu {
   background-color: #1D1F20;
   background-image: linear-gradient(145deg, #1D1F20, #404348);
@@ -62,12 +58,6 @@ a {
   text-decoration: none;
 }
 
-.panel {
-  text-align: center;
-  padding-top: 5px;
-  min-height: 100%;
-}
-
 
 /**
  * Filter Box
@@ -108,12 +98,19 @@ a {
 
 
 /**
- * Header
+ * Panel
  */
+
+.panel {
+  background-color: #fff;
+  text-align: center;
+  padding-top: 5px;
+  min-height: 100%;
+}
+
 .panel-header {
   margin: 85px auto 55px;
 }
-
 
 /**
  * hamburger
@@ -128,30 +125,31 @@ a {
 
 }
 
+
 /**
- * Medium Screens
+ * Map styles
  */
-@media all and (min-width:40em) {
 
-  .btn-hamburger {
-    top: 20px;
-    left: 30px;
-  }
 
-  .panel-header {
-    margin-top: 40px;
-    width: 455px;
-  }
-
+#map {
+  top: 56px;
+  bottom:0px;
+  height: 100%;
+  left: 0px;
+  position: absolute;
+  right: 0px;
 }
+
+#pano {
+  width: 200px;
+  height: 200px;
+}
+
 
 /**
  * Slideout module styles
  */
-body {
- width: 100%;
- height: 100%;
-}
+
 
 .slideout-menu {
  position: fixed;
@@ -189,18 +187,3 @@ body {
 .slideout-open .slideout-menu {
  display: block;
 }
-
-
-#map {
-  bottom:0px;
-  height: 100%;
-  left: 362px;
-  position: absolute;
-  right: 0px;
-}
-
-#pano {
-  width: 200px;
-  height: 200px;
-}
-
