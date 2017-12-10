@@ -1,7 +1,9 @@
 // Model Section
-// JSON data for breweries
-
-var initialBreweries = [
+var model = {
+  // Set the current list of breweries to null
+  currentBreweryList: [],
+  // JSON data for breweries
+  initialBreweries: [
     {
         breweryName: 'Big Head Brewing Co.',
         location: {lat: 43.044613, lng: -87.990269},
@@ -51,37 +53,38 @@ var initialBreweries = [
         beerid: 'BeerID',
         visible: true
     }
-];
+  ],
 
 // Brewery Constructor - takes brewery json and creates object with ko observables
-
-var Brewery = function (data) {
-  this.breweryName = ko.observable(data.breweryName);
-  this.placeid = ko.observable(data.placeid);
-  this.beerid = ko.observable(data.beerid);
-  this.visible = ko.observable(data.visible);
+  Brewery: function (data) {
+    this.breweryName = ko.observable(data.breweryName);
+    this.placeid = ko.observable(data.placeid);
+    this.beerid = ko.observable(data.beerid);
+    this.visible = ko.observable(data.visible);
+  }
 };
+
 
 // View model
 
-var ViewModel = function () {
-  var self = this;
+var viewmodel = {
 
-  // Creates array of breweries instances. Uses the initialBreweries json and
-  // Brewery constructor to create
-  this.breweryList = ko.observableArray([]);
-  initialBreweries.forEach(function(breweryItem) {
-    self.breweryList.push(new Brewery(breweryItem));
-    });
-  // Need to add an unclicked state. No brewery selected.
-  // this.currentBrewery = ko.observable(this.breweryList()[0]);
-  // this.changeBrewery = function (clickedBrewery) {
-  //   self.currentCat(clickedcat);
-  // };
-};
-
-
-
+  init: function() {
+    // Use constructor to build brewery list
+    var self = this;
+    // Create array of breweries instances. Uses the initialBreweries json and
+    // Brewery constructor to create
+    this.breweryList = ko.observableArray([]);
+    model.initialBreweries.forEach(function(breweryItem) {
+      self.breweryList.push(new model.Brewery(breweryItem));
+      });
+    // Need to add an unclicked state. No brewery selected.
+    // this.currentBrewery = ko.observable(this.breweryList()[0]);
+    // this.changeBrewery = function (clickedBrewery) {
+    //   self.currentCat(clickedcat);
+    // };
+  }
+}
 
 
 // Google Map Section
@@ -115,10 +118,10 @@ var defaultIcon = makeMarkerIcon('0091ff');
 var highlightedIcon = makeMarkerIcon('FFFF24');
 
 // Create markers for breweries
-for (var i = 0; i < initialBreweries.length; i++) {
+for (var i = 0; i < model.initialBreweries.length; i++) {
   // Get the position from the location array.
-  var position = initialBreweries[i].location;
-  var title = initialBreweries[i].breweryName;
+  var position = model.initialBreweries[i].location;
+  var title = model.initialBreweries[i].breweryName;
   // Create a marker per location, and put into markers array.
   var marker = new google.maps.Marker({
     position: position,
@@ -269,4 +272,4 @@ for (var i = 0; i < places.length; i++) {
 map.fitBounds(bounds);
 }
 
-ko.applyBindings(new ViewModel());
+ko.applyBindings(new viewmodel.init());
