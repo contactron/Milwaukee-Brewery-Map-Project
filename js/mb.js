@@ -1,14 +1,15 @@
 // Model Section
 var model = {
   // Set the current list of breweries to null
-  currentBreweryList: [],
+  currentBreweryList: null,
+  selectedBrewery: {},
   // JSON data for breweries
   initialBreweries: [
     {
         breweryName: 'Big Head Brewing Co.',
         location: {lat: 43.044613, lng: -87.990269},
         placeid: 'ChIJGQGhIx8bBYgRKKgwMcNyCqE',
-        beer_id: "BeerID",
+        beerid: "BeerID",
         visible: true
     },
     {
@@ -65,8 +66,7 @@ var model = {
 };
 
 
-// View model
-
+// View model section
 var viewmodel = {
 
   init: function() {
@@ -74,10 +74,13 @@ var viewmodel = {
     var self = this;
     // Create array of breweries instances. Uses the initialBreweries json and
     // Brewery constructor to create
-    this.breweryList = ko.observableArray([]);
+    self.breweryList = ko.observableArray([]);
     model.initialBreweries.forEach(function(breweryItem) {
       self.breweryList.push(new model.Brewery(breweryItem));
       });
+    console.log(self.breweryList()[0].breweryName());
+    console.log(self);
+    console.log(init().breweryList()[0].breweryName());
     // Need to add an unclicked state. No brewery selected.
     // this.currentBrewery = ko.observable(this.breweryList()[0]);
     // this.changeBrewery = function (clickedBrewery) {
@@ -90,66 +93,62 @@ var viewmodel = {
 // Google Map Section
 
 var map;
-
-// Create a new blank array for all the listing markers.
 var markers = [];
-
-// Create placemarkers array to use in multiple functions to have control
-// over the number of places that show.
+// Create placemarkers array to have control over the number of places that show.
 var placeMarkers = [];
 
 function initMap() {
+  // Constructor creates a new map - only center and zoom are required.
+  map = new google.maps.Map(document.getElementById('map'), {
+    // Milwaukee lat lngs
+    center: {lat: 43.038902, lng: -87.906471},
+    zoom: 13,
+    mapTypeControl: false
+  });
 
-    // Constructor creates a new map - only center and zoom are required.
-    map = new google.maps.Map(document.getElementById('map'), {
-      // Milwaukee lat lngs
-      center: {lat: 43.038902, lng: -87.906471},
-      zoom: 13,
-      mapTypeControl: false
+  var largeInfowindow = new google.maps.InfoWindow();
+
+  // Stylings for markers
+  var defaultIcon = makeMarkerIcon('0091ff');
+  var highlightedIcon = makeMarkerIcon('FFFF24');
+
+  // Create markers for breweries
+  for (var i = 0; i < viewmodel.breweryList().length; i++) {
+    // Get the position from the location array.
+    var position = viewmodel.breweryList()[i].location();
+    var title = viewmodel.breweryList()[i].breweryName();
+
+    // Create a marker per location, and put into markers array.
+    var marker = new google.maps.Marker({
+      position: position,
+      title: title,
+      animation: google.maps.Animation.DROP,
+      icon: defaultIcon,
+      id: i
     });
+    // Push the marker to our array of markers.
+    markers.push(marker);
+    // Create an onclick event to open the large infowindow at each marker.
+    marker.addListener('click', function() {
+      populateInfoWindow(this, largeInfowindow);
+    });
+    // Create two event listeners - one for mouseover, one for mouseout,
+    marker.addListener('mouseover', function() {
+      this.setIcon(highlightedIcon);
+    });
+    marker.addListener('mouseout', function() {
+      this.setIcon(defaultIcon);
+    });
+  }
 
-var largeInfowindow = new google.maps.InfoWindow();
-
-// Style the markers a bit. This will be our listing marker icon.
-var defaultIcon = makeMarkerIcon('0091ff');
-
-// Create a "highlighted location" marker color for when the user
-// mouses over the marker.
-var highlightedIcon = makeMarkerIcon('FFFF24');
-
-// Create markers for breweries
-for (var i = 0; i < model.initialBreweries.length; i++) {
-  // Get the position from the location array.
-  var position = model.initialBreweries[i].location;
-  var title = model.initialBreweries[i].breweryName;
-  // Create a marker per location, and put into markers array.
-  var marker = new google.maps.Marker({
-    position: position,
-    title: title,
-    animation: google.maps.Animation.DROP,
-    icon: defaultIcon,
-    id: i
-  });
-
-
-  // Push the marker to our array of markers.
-  markers.push(marker);
-  // Create an onclick event to open the large infowindow at each marker.
-  marker.addListener('click', function() {
-    populateInfoWindow(this, largeInfowindow);
-  });
-  // Two event listeners - one for mouseover, one for mouseout,
-  // to change the colors back and forth.
-  marker.addListener('mouseover', function() {
-    this.setIcon(highlightedIcon);
-  });
-  marker.addListener('mouseout', function() {
-    this.setIcon(defaultIcon);
-  });
-}
-document.getElementById('show-listings').addEventListener('click', showListings);
+  document.getElementById('show-listings').addEventListener('click', showListings);
+  console.log('go to end of init map');
 
 }
+
+
+
+
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
@@ -230,46 +229,53 @@ return markerImage;
 }
 
 
+// PROBABLY CAN REMEOVE THIS ENTIRE SECTION
+
+
 // This function creates markers for each place found in either places search.
 function createMarkersForPlaces(places) {
-var bounds = new google.maps.LatLngBounds();
-for (var i = 0; i < places.length; i++) {
-  var place = places[i];
-  var icon = {
-    url: place.icon,
-    size: new google.maps.Size(35, 35),
-    origin: new google.maps.Point(0, 0),
-    anchor: new google.maps.Point(15, 34),
-    scaledSize: new google.maps.Size(25, 25)
-  };
-  // Create a marker for each place.
-  var marker = new google.maps.Marker({
-    map: map,
-    icon: icon,
-    title: place.name,
-    position: place.geometry.location,
-    id: place.place_id
-  });
-  // Create a single infowindow to be used with the place details information
-  // so that only one is open at once.
-  var placeInfoWindow = new google.maps.InfoWindow();
-  // If a marker is clicked, do a place details search on it in the next function.
-  marker.addListener('click', function() {
-    if (placeInfoWindow.marker == this) {
-      console.log("This infowindow already is on this marker!");
+  console.log('the createMarkersForPlaces function was called.');
+  var bounds = new google.maps.LatLngBounds();
+  for (var i = 0; i < places.length; i++) {
+    var place = places[i];
+    var icon = {
+      url: place.icon,
+      size: new google.maps.Size(35, 35),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(15, 34),
+      scaledSize: new google.maps.Size(25, 25)
+    };
+    // Create a marker for each place.z
+    var marker = new google.maps.Marker({
+      map: map,
+      icon: icon,
+      title: place.name,
+      position: place.geometry.location,
+      id: place.place_id
+    });
+    // Create a single infowindow to be used with the place details information
+    // so that only one is open at once.
+    var placeInfoWindow = new google.maps.InfoWindow();
+    // If a marker is clicked, do a place details search on it in the next function.
+    marker.addListener('click', function() {
+      if (placeInfoWindow.marker == this) {
+        console.log("This infowindow already is on this marker!");
+      } else {
+        getPlacesDetails(this, placeInfoWindow);
+      }
+    });
+    placeMarkers.push(marker);
+    if (place.geometry.viewport) {
+      // Only geocodes have viewport.
+      bounds.union(place.geometry.viewport);
     } else {
-      getPlacesDetails(this, placeInfoWindow);
+      bounds.extend(place.geometry.location);
     }
-  });
-  placeMarkers.push(marker);
-  if (place.geometry.viewport) {
-    // Only geocodes have viewport.
-    bounds.union(place.geometry.viewport);
-  } else {
-    bounds.extend(place.geometry.location);
   }
+  map.fitBounds(bounds);
 }
-map.fitBounds(bounds);
-}
+
+// REMOVE THE ENTIRE FUNCTION ABOVE
+
 
 ko.applyBindings(new viewmodel.init());
