@@ -125,7 +125,7 @@ var viewmodel = {
       this.markers.push(marker);
       // Create an onclick event to open the large infowindow at each marker.
       marker.addListener('click', function() {
-        populateInfoWindow(this, largeInfowindow);
+        viewmodel.populateInfoWindow(this, largeInfowindow);
       });
       // Two event listeners - one for mouseover, one for mouseout,
       // to change the colors back and forth.
@@ -169,54 +169,51 @@ var viewmodel = {
     //     }
     //   }
     }
-  }
-}
+  },
 
-
-
-// This function populates the infowindow when the marker is clicked. We'll only allow
-// one infowindow which will open at the marker that is clicked, and populate based
-// on that markers position.
-function populateInfoWindow(marker, infowindow) {
-// Check to make sure the infowindow is not already opened on this marker.
-  if (infowindow.marker != marker) {
-    // Clear the infowindow content to give the streetview time to load.
-    infowindow.setContent('');
-    infowindow.marker = marker;
-    // Make sure the marker property is cleared if the infowindow is closed.
-    infowindow.addListener('closeclick', function() {
-      infowindow.marker = null;
-    });
-
-    // Make call to yelp to get star rating
-    function yelpInfo() {
-      var cors_anywhere_url = 'https://cors-anywhere.herokuapp.com/';
-      var yelp_auth_url = cors_anywhere_url + "https://api.yelp.com/oauth2/token";
-      var bearerToken = 'wd9ppcEop7IrcIlrunswsXspkD4DV0XczDE3CEROUQHEasc26pnMhxBn253Vpcsr0ilhGGQHGyVC2xVowzVdTTwoUHFbYj8CC5usRh7Ud2YvxJahU7mbegbIppQuWnYx';
-      var yelpbase_url = cors_anywhere_url + 'https://api.yelp.com/v3/businesses/';
-      // var yelp_search_url = cors_anywhere_url + "https://api.yelp.com/v3/businesses/lakefront-brewery-milwaukee";
-      var business = marker.yelpid;
-      var yelp_url = yelpbase_url + business;
-      console.log(yelp_url);
-      $.ajax({
-        url: yelp_url,
-        beforeSend: function(xhr){
-  //          xhr.setRequestHeader('Access-Control-Allow-origin', 'true');
-            xhr.setRequestHeader('Authorization', 'Bearer '+ bearerToken);
-        },
-        }).done(function(response){
-            infowindow.setContent('<div><span class="infotitle">' + marker.title + '</span><div class="infobox"><img class="infopicture" src="' + response.image_url +'" width="250">');
-        }).fail(function(error, textStatus, errorThrown){
-          // Display error message if yelp call fails.
-          infowindow.setContent('<div> Sorry, Yelp! appears to be down.</div>');
+// Populate the infowindow when the marker is clicked.
+  populateInfoWindow: function(marker, infowindow) {
+  // Check to make sure the infowindow is not already opened on this marker.
+    if (infowindow.marker != marker) {
+      // Clear the infowindow content to give the streetview time to load.
+      infowindow.setContent('');
+      infowindow.marker = marker;
+      // Make sure the marker property is cleared if the infowindow is closed.
+      infowindow.addListener('closeclick', function() {
+        infowindow.marker = null;
       });
-    };
-    // infowindow.setContent('<div>' + marker.title + '</div><div> Remove this and do it in the yelp function.</div>');
-    infowindow.setContent('<div class="infobox"><img src="img/loading_spinner.gif" class="spinner"></div>');
-    yelpInfo();
-    infowindow.open(map, marker);
+
+      // Make call to yelp to get star rating
+      function yelpInfo() {
+        var cors_anywhere_url = 'https://cors-anywhere.herokuapp.com/';
+        var yelp_auth_url = cors_anywhere_url + "https://api.yelp.com/oauth2/token";
+        var bearerToken = 'wd9ppcEop7IrcIlrunswsXspkD4DV0XczDE3CEROUQHEasc26pnMhxBn253Vpcsr0ilhGGQHGyVC2xVowzVdTTwoUHFbYj8CC5usRh7Ud2YvxJahU7mbegbIppQuWnYx';
+        var yelpbase_url = cors_anywhere_url + 'https://api.yelp.com/v3/businesses/';
+        // var yelp_search_url = cors_anywhere_url + "https://api.yelp.com/v3/businesses/lakefront-brewery-milwaukee";
+        var business = marker.yelpid;
+        var yelp_url = yelpbase_url + business;
+        console.log(yelp_url);
+        $.ajax({
+          url: yelp_url,
+          beforeSend: function(xhr){
+    //          xhr.setRequestHeader('Access-Control-Allow-origin', 'true');
+              xhr.setRequestHeader('Authorization', 'Bearer '+ bearerToken);
+          },
+          }).done(function(response){
+              infowindow.setContent('<div><span class="infotitle">' + marker.title + '</span><div class="infobox"><img class="infopicture" src="' + response.image_url +'" width="250">');
+          }).fail(function(error, textStatus, errorThrown){
+            // Display error message if yelp call fails.
+            infowindow.setContent('<div> Sorry, Yelp! appears to be down.</div>');
+        });
+      };
+      // infowindow.setContent('<div>' + marker.title + '</div><div> Remove this and do it in the yelp function.</div>');
+      infowindow.setContent('<div class="infobox"><img src="img/loading_spinner.gif" class="spinner"></div>');
+      yelpInfo();
+      infowindow.open(map, marker);
+    }
   }
 }
+
 
 // This function will loop through the listings and hide them all.
 function hideMarkers(markers) {
