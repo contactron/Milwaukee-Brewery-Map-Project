@@ -24,8 +24,6 @@
                             <input type="text" id="searchInput" onkeyup="viewmodel.filterListings()"  placeholder="Filter by..." name="search">
                             <img id="filterbutton" src="img/filtericon.svg" class="filtericon">
                         </form>
-                        <input id="show-listings" type="button" value="Show Listings">
-<!--                     </div> -->
                   </div>
             </div>
 
@@ -50,7 +48,7 @@
         <!-- Load required Google Map APIs -->
         <script async defer
             src=
-            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=initMap">
+            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=viewmodel.initMap">
         </script>
         <!-- Load Jquery -->
         <script src="js/jquery.min.js"></script>
