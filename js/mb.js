@@ -206,17 +206,14 @@ function populateInfoWindow(marker, infowindow) {
             xhr.setRequestHeader('Authorization', 'Bearer '+ bearerToken);
         },
         }).done(function(response){
-            infowindow.setContent('<div><img src="' + response.image_url +'" width="250">');
-            console.log("Rating is : ");
-            console.log(response.rating); // the response has the access_token
+            infowindow.setContent('<div><span class="infotitle">' + marker.title + '</span><div class="infobox"><img class="infopicture" src="' + response.image_url +'" width="250">');
         }).fail(function(error, textStatus, errorThrown){
-          // Add content to info window
+          // Display error message if yelp call fails.
           infowindow.setContent('<div> Sorry, Yelp! appears to be down.</div>');
-          console.log("Error occured while searching.");
-          console.dir(textStatus, errorThrown);
       });
     };
     // infowindow.setContent('<div>' + marker.title + '</div><div> Remove this and do it in the yelp function.</div>');
+    infowindow.setContent('<div class="infobox"><img src="img/loading_spinner.gif" class="spinner"></div>');
     yelpInfo();
     infowindow.open(map, marker);
   }

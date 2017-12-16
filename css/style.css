@@ -129,11 +129,29 @@ body,
   right: 0px;
 }
 
-#pano {
-  width: 200px;
-  height: 200px;
+.infobox {
+  width: 250px;
+  height: 175px;
 }
 
+.infotitle {
+  text-transform: uppercase;
+  color: #85888d;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+}
+
+.infopicture {
+  margin-top: 8px;
+}
+
+.spinner {
+  width: 100px;
+  padding-top: 40px;
+  display: block;
+  margin: 0 auto;
+}
 
 /**
  * Slideout module styles
