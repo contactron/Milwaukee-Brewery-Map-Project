@@ -21,8 +21,8 @@
                   <div class="search-container">
 <!--                     <div class="innerdiv"> -->
                         <form action="/action_page.php">
-                            <input type="text" placeholder="Filter by..." name="search">
-                            <img src="img/filtericon.svg" class="filtericon">
+                            <input type="text" id="searchInput" onkeyup="viewmodel.filterListings()"  placeholder="Filter by..." name="search">
+                            <img id="filterbutton" src="img/filtericon.svg" class="filtericon">
                         </form>
                         <input id="show-listings" type="button" value="Show Listings">
 <!--                     </div> -->
@@ -50,9 +50,10 @@
         <!-- Load required Google Map APIs -->
         <script async defer
             src=
-            "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=initMap">
+            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=initMap">
         </script>
-
+        <!-- Load Jquery -->
+        <script src="js/jquery.min.js"></script>
         <!-- Load Slideout -->
         <script src="js/dist/slideout.min.js"></script>
         <script src="js/slider.js"></script>
@@ -60,6 +61,7 @@
         <script src="js/knockout-3.4.2.js"></script>
         <!-- Load Core Javascript -->
         <script src="js/mb.js"></script>
-        <
+
+
     </body>
 </html>

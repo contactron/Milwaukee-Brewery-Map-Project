@@ -1,57 +1,56 @@
 // Model Section
 var model = {
   // Set the current list of breweries to null
-  currentBreweryList: null,
-  selectedBrewery: {},
+  currentBreweryList: [],
   // JSON data for breweries
   initialBreweries: [
     {
         breweryName: 'Big Head Brewing Co.',
         location: {lat: 43.044613, lng: -87.990269},
         placeid: 'ChIJGQGhIx8bBYgRKKgwMcNyCqE',
-        beerid: "BeerID",
+        yelpid: 'big-head-brewing-wauwatosa-2',
         visible: true
     },
     {
         breweryName: 'Brenner Brewing Co.',
         location: {lat: 43.023950, lng: -87.916604},
         placeid: 'ChIJaXyDNJQZBYgRvh2nJNFu0wA',
-        beerid: 'BeerID',
+        yelpid: 'brenner-brewing-co-milwaukee-3',
         visible: true
     },
     {
-        breweryName: 'Water Street Brewery',
-        location: {lat: 43.044783, lng: -87.911197},
+        breweryName: 'Good City Brewing',
+        location: {lat: 43.057820, lng: -87.887510},
         placeid: 'ChIJH3PwhwwZBYgRCTpXjHjAuAo',
-        beerid: 'BeerID',
+        yelpid: 'good-city-brewing-milwaukee',
         visible: true
     },
     {
         breweryName: 'Lakefront Brewery',
         location: {lat: 43.054726, lng: -87.905287},
         placeid: 'ChIJkWA1FRcZBYgR7F7GEpN_rno',
-        beerid: 'BeerID',
+        yelpid: 'lakefront-brewery-milwaukee',
         visible: true
     },
     {
         breweryName: 'Milwaukee Brewing Company',
         location: {lat: 43.024902, lng: -87.913027},
         placeid: 'ChIJj3pG4L0ZBYgRo0K6RMvwvYU',
-        beerid: 'BeerID',
+        yelpid: 'milwaukee-brewing-company-milwaukee',
         visible: true
     },
     {
         breweryName: 'Mob Craft Brewery',
         location: {lat: 43.026082, lng: -87.917236},
         placeid: 'ChIJlwhWk5YZBYgRFnUdoyba-_Q',
-        beerid: 'BeerID',
+        yelpid: 'mobcraft-beer-milwaukee',
         visible: true
     },
     {
         breweryName: 'Sprecher Brewing Co.',
         location: {lat: 43.099650, lng: -87.919663},
         placeid: 'ChIJeVHsipYeBYgR4WMnS3-jVN4',
-        beerid: 'BeerID',
+        yelpid: 'sprecher-brewing-company-milwaukee',
         visible: true
     }
   ],
@@ -60,13 +59,15 @@ var model = {
   Brewery: function (data) {
     this.breweryName = ko.observable(data.breweryName);
     this.placeid = ko.observable(data.placeid);
-    this.beerid = ko.observable(data.beerid);
+    this.yelpid = ko.observable(data.yelpid);
     this.visible = ko.observable(data.visible);
   }
 };
 
 
-// View model section
+
+// View model
+
 var viewmodel = {
 
   init: function() {
@@ -74,126 +75,151 @@ var viewmodel = {
     var self = this;
     // Create array of breweries instances. Uses the initialBreweries json and
     // Brewery constructor to create
-    self.breweryList = ko.observableArray([]);
+    this.breweryList = ko.observableArray([]);
     model.initialBreweries.forEach(function(breweryItem) {
       self.breweryList.push(new model.Brewery(breweryItem));
       });
-    console.log(self.breweryList()[0].breweryName());
-    console.log(self);
-    console.log(init().breweryList()[0].breweryName());
-    // Need to add an unclicked state. No brewery selected.
-    // this.currentBrewery = ko.observable(this.breweryList()[0]);
-    // this.changeBrewery = function (clickedBrewery) {
-    //   self.currentCat(clickedcat);
-    // };
+    console.log(self.breweryList());  //works
+    console.dir('self = ' + self);
+    console.dir('this = ' + this);
+  },
+
+  filterListings: function() {
+    var input, filtervalue, i;
+    input = document.getElementById("searchInput");
+    console.log(input);
+    filtervalue = input.value.toUpperCase(); //working
+    itemcount = this.breweryList().length;  // broken
+
+    for (i = 0; i < itemcount; i++) {
+    //   td = tr[i].getElementsByTagName("td")[0];
+    //   if (td) {
+    //     if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+    //       tr[i].style.display = "";
+    //     } else {
+    //       tr[i].style.display = "none";
+    //     }
+    //   }
+    }
   }
+
 }
+
+
+
 
 
 // Google Map Section
 
 var map;
+
+// Create a new blank array for all the listing markers.
 var markers = [];
-// Create placemarkers array to have control over the number of places that show.
+
+// Create placemarkers array to use in multiple functions to have control
+// over the number of places that show.
 var placeMarkers = [];
 
 function initMap() {
-  // Constructor creates a new map - only center and zoom are required.
-  map = new google.maps.Map(document.getElementById('map'), {
-    // Milwaukee lat lngs
-    center: {lat: 43.038902, lng: -87.906471},
-    zoom: 13,
-    mapTypeControl: false
+
+    // Constructor creates a new map - only center and zoom are required.
+    map = new google.maps.Map(document.getElementById('map'), {
+      // Milwaukee lat lngs
+      center: {lat: 43.038902, lng: -87.906471},
+      zoom: 13,
+      mapTypeControl: false
+    });
+
+var largeInfowindow = new google.maps.InfoWindow();
+
+// Style the markers a bit. This will be our listing marker icon.
+var defaultIcon = makeMarkerIcon('0091ff');
+
+// Create a "highlighted location" marker color for when the user
+// mouses over the marker.
+var highlightedIcon = makeMarkerIcon('FFFF24');
+
+// Create markers for breweries
+for (var i = 0; i < model.initialBreweries.length; i++) {
+  // Get the position from the location array.
+  var position = model.initialBreweries[i].location;
+  var title = model.initialBreweries[i].breweryName;
+  var yelpid = model.initialBreweries[i].yelpid;
+  // Create a marker per location, and put into markers array.
+  var marker = new google.maps.Marker({
+    position: position,
+    title: title,
+    animation: google.maps.Animation.DROP,
+    icon: defaultIcon,
+    id: i,
+    yelpid: yelpid
   });
 
-  var largeInfowindow = new google.maps.InfoWindow();
-
-  // Stylings for markers
-  var defaultIcon = makeMarkerIcon('0091ff');
-  var highlightedIcon = makeMarkerIcon('FFFF24');
-
-  // Create markers for breweries
-  for (var i = 0; i < viewmodel.breweryList().length; i++) {
-    // Get the position from the location array.
-    var position = viewmodel.breweryList()[i].location();
-    var title = viewmodel.breweryList()[i].breweryName();
-
-    // Create a marker per location, and put into markers array.
-    var marker = new google.maps.Marker({
-      position: position,
-      title: title,
-      animation: google.maps.Animation.DROP,
-      icon: defaultIcon,
-      id: i
-    });
-    // Push the marker to our array of markers.
-    markers.push(marker);
-    // Create an onclick event to open the large infowindow at each marker.
-    marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
-    });
-    // Create two event listeners - one for mouseover, one for mouseout,
-    marker.addListener('mouseover', function() {
-      this.setIcon(highlightedIcon);
-    });
-    marker.addListener('mouseout', function() {
-      this.setIcon(defaultIcon);
-    });
-  }
-
-  document.getElementById('show-listings').addEventListener('click', showListings);
-  console.log('go to end of init map');
+  // Push the marker to our array of markers.
+  markers.push(marker);
+  console.log(marker);
+  // Create an onclick event to open the large infowindow at each marker.
+  marker.addListener('click', function() {
+    populateInfoWindow(this, largeInfowindow);
+  });
+  // Two event listeners - one for mouseover, one for mouseout,
+  // to change the colors back and forth.
+  marker.addListener('mouseover', function() {
+    this.setIcon(highlightedIcon);
+  });
+  marker.addListener('mouseout', function() {
+    this.setIcon(defaultIcon);
+  });
+}
+document.getElementById('show-listings').addEventListener('click', showListings);
 
 }
-
-
-
-
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
 function populateInfoWindow(marker, infowindow) {
 // Check to make sure the infowindow is not already opened on this marker.
-if (infowindow.marker != marker) {
-  // Clear the infowindow content to give the streetview time to load.
-  infowindow.setContent('');
-  infowindow.marker = marker;
-  // Make sure the marker property is cleared if the infowindow is closed.
-  infowindow.addListener('closeclick', function() {
-    infowindow.marker = null;
-  });
-  var streetViewService = new google.maps.StreetViewService();
-  var radius = 50;
-  // In case the status is OK, which means the pano was found, compute the
-  // position of the streetview image, then calculate the heading, then get a
-  // panorama from that and set the options
-  function getStreetView(data, status) {
-    if (status == google.maps.StreetViewStatus.OK) {
-      var nearStreetViewLocation = data.location.latLng;
-      var heading = google.maps.geometry.spherical.computeHeading(
-        nearStreetViewLocation, marker.position);
-        infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-        var panoramaOptions = {
-          position: nearStreetViewLocation,
-          pov: {
-            heading: heading,
-            pitch: 30
-          }
-        };
-      var panorama = new google.maps.StreetViewPanorama(
-        document.getElementById('pano'), panoramaOptions);
-    } else {
-      infowindow.setContent('<div>' + marker.title + '</div>' +
-        '<div>No Street View Found</div>');
-    }
+  if (infowindow.marker != marker) {
+    // Clear the infowindow content to give the streetview time to load.
+    infowindow.setContent('');
+    infowindow.marker = marker;
+    // Make sure the marker property is cleared if the infowindow is closed.
+    infowindow.addListener('closeclick', function() {
+      infowindow.marker = null;
+    });
+
+    // Make call to yelp to get star rating
+    function yelpInfo() {
+      var cors_anywhere_url = 'https://cors-anywhere.herokuapp.com/';
+      var yelp_auth_url = cors_anywhere_url + "https://api.yelp.com/oauth2/token";
+      var bearerToken = 'wd9ppcEop7IrcIlrunswsXspkD4DV0XczDE3CEROUQHEasc26pnMhxBn253Vpcsr0ilhGGQHGyVC2xVowzVdTTwoUHFbYj8CC5usRh7Ud2YvxJahU7mbegbIppQuWnYx';
+      var yelpbase_url = cors_anywhere_url + 'https://api.yelp.com/v3/businesses/';
+      // var yelp_search_url = cors_anywhere_url + "https://api.yelp.com/v3/businesses/lakefront-brewery-milwaukee";
+      var business = marker.yelpid;
+      var yelp_url = yelpbase_url + business;
+      console.log(yelp_url);
+      $.ajax({
+        url: yelp_url,
+        beforeSend: function(xhr){
+  //          xhr.setRequestHeader('Access-Control-Allow-origin', 'true');
+            xhr.setRequestHeader('Authorization', 'Bearer '+ bearerToken);
+        },
+        }).done(function(response){
+            infowindow.setContent('<div><img src="' + response.image_url +'" width="250">');
+            console.log("Rating is : ");
+            console.log(response.rating); // the response has the access_token
+        }).fail(function(error, textStatus, errorThrown){
+          // Add content to info window
+          infowindow.setContent('<div> Sorry, Yelp! appears to be down.</div>');
+          console.log("Error occured while searching.");
+          console.dir(textStatus, errorThrown);
+      });
+    };
+    // infowindow.setContent('<div>' + marker.title + '</div><div> Remove this and do it in the yelp function.</div>');
+    yelpInfo();
+    infowindow.open(map, marker);
   }
-  // Use streetview service to get the closest streetview image within
-  // 50 meters of the markers position
-  streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-  // Open the infowindow on the correct marker.
-  infowindow.open(map, marker);
-}
 }
 
 // This function will loop through the markers array and display them all.
@@ -229,53 +255,10 @@ return markerImage;
 }
 
 
-// PROBABLY CAN REMEOVE THIS ENTIRE SECTION
 
 
-// This function creates markers for each place found in either places search.
-function createMarkersForPlaces(places) {
-  console.log('the createMarkersForPlaces function was called.');
-  var bounds = new google.maps.LatLngBounds();
-  for (var i = 0; i < places.length; i++) {
-    var place = places[i];
-    var icon = {
-      url: place.icon,
-      size: new google.maps.Size(35, 35),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(15, 34),
-      scaledSize: new google.maps.Size(25, 25)
-    };
-    // Create a marker for each place.z
-    var marker = new google.maps.Marker({
-      map: map,
-      icon: icon,
-      title: place.name,
-      position: place.geometry.location,
-      id: place.place_id
-    });
-    // Create a single infowindow to be used with the place details information
-    // so that only one is open at once.
-    var placeInfoWindow = new google.maps.InfoWindow();
-    // If a marker is clicked, do a place details search on it in the next function.
-    marker.addListener('click', function() {
-      if (placeInfoWindow.marker == this) {
-        console.log("This infowindow already is on this marker!");
-      } else {
-        getPlacesDetails(this, placeInfoWindow);
-      }
-    });
-    placeMarkers.push(marker);
-    if (place.geometry.viewport) {
-      // Only geocodes have viewport.
-      bounds.union(place.geometry.viewport);
-    } else {
-      bounds.extend(place.geometry.location);
-    }
-  }
-  map.fitBounds(bounds);
-}
 
-// REMOVE THE ENTIRE FUNCTION ABOVE
+
 
 
 ko.applyBindings(new viewmodel.init());
