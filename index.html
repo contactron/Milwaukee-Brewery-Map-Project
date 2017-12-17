@@ -5,6 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Milwaukee Breweries</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js'></script>
+
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,700">
         <link rel="stylesheet" href="css/style.css">
 
@@ -17,18 +20,20 @@
           <section class="menu-section">
             <h3 class="menu-section-title">Milwaukee Breweries</h3>
             <div class="filterbox">
-<!--                   <a class="active" href="#home">FIlter Results</a> -->
-                  <div class="search-container">
-<!--                     <div class="innerdiv"> -->
-                        <form action="/action_page.php">
-                            <input type="text" id="searchInput" onkeyup="viewmodel.filterListings()"  placeholder="Filter by..." name="search">
-                            <img id="filterbutton" src="img/filtericon.svg" class="filtericon">
-                        </form>
-                  </div>
+                <div class="search-container">
+                    <form action="/action_page.php">
+                        <!-- Type-ahead filtering, binding input to KO var filterValue -->
+                        <input type="text" id="searchInput" data-bind="value:filterValue, valueUpdate: 'afterkeydown'" onkeyup="vm.showMarkers()" placeholder="Filter by..." name="search">
+                    </form>
+                 </div>
             </div>
+           <!--  bind the list to the filtered KO array -->
+            <ul data-bind="foreach: filteredBreweryList" class="menu-section-list">
+                <li data-bind="text: breweryName, click: $parent.listpopulatesInfoWindow"></li>
+<!--
+                <li data-bind="text: breweryName, click: vm.populateInfoWindow(markers[breweryid], largeInfowindow)"></li> -->
 
-            <ul data-bind="foreach: breweryList" class="menu-section-list">
-                <li data-bind="text: breweryName, click: $parent.changeCat""></li>
+
             </ul>
           </section>
         </nav>
@@ -44,22 +49,15 @@
             <div id="map"></div>
 
         </main>
-
         <!-- Load required Google Map APIs -->
-        <script async defer
-            src=
-            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=viewmodel.initMap">
-        </script>
-        <!-- Load Jquery -->
-        <script src="js/jquery.min.js"></script>
-        <!-- Load Slideout -->
+        <script src="js/mb.js"></script>
         <script src="js/dist/slideout.min.js"></script>
         <script src="js/slider.js"></script>
-        <!-- Load Knockout -->
-        <script src="js/knockout-3.4.2.js"></script>
         <!-- Load Core Javascript -->
-        <script src="js/mb.js"></script>
-
+        <script async defer
+            src=
+            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=initMap">
+        </script>
 
     </body>
 </html>
