@@ -98,19 +98,21 @@ var viewmodel = function(){
     map.fitBounds(bounds);
   };
 
-  self.listpopulatesInfoWindow = function(data) {
-    var marker = self.markers[data.breweryid];
-    console.log(marker);
-    vm.populateInfoWindow(marker, largeInfowindow);
+  // make the marker bounce, wait 1.5 sec and stop the bounce
+  self.animateMarker = function(marker) {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){ marker.setAnimation(null); }, 1500);
   };
 
+  self.listpopulatesInfoWindow = function(data) {
+    var marker = self.markers[data.breweryid];
+    vm.populateInfoWindow(marker, largeInfowindow);
+  };
 
 //Populate the infowindow when the marker is clicked.
   self.populateInfoWindow = function(marker, infowindow) {
   // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
-      // Clear the infowindow content to give the streetview time to load.
-      infowindow.setContent('');
       infowindow.marker = marker;
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick', function() {
@@ -139,20 +141,16 @@ var viewmodel = function(){
             infowindow.setContent('<div> Sorry, Yelp! appears to be down.</div>');
         });
       }
-
-      // infowindow.setContent('<div>' + marker.title + '</div><div> Remove this and do it in the yelp function.</div>');
+      // make the marker bounce
+      vm.animateMarker(marker);
+      // load the infowindow content with a spinner until Yelp returns data
       infowindow.setContent('<div class="infobox"><img src="img/loading_spinner.gif" class="spinner"></div>');
+      // make call to Yelp for business image and name.
       yelpInfo();
+      // open the infowindow for the marker
       infowindow.open(map, marker);
     }
 };
-
-// This function will loop through the listings and hide them all.
-  self.hideMarkers= function(markers) {
-    for (var i = 0; i < self.markers.length; i++) {
-      self.markers[i].setMap(null);
-    }
-  };
 
   // This function takes in a COLOR, and then creates a new marker
   // icon of that color.
