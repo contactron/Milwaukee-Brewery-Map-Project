@@ -99,11 +99,11 @@ var viewmodel = {
     var largeInfowindow = new google.maps.InfoWindow();
 
     // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = makeMarkerIcon('0091ff');
+    var defaultIcon = this.makeMarkerIcon('0091ff');
 
     // Create a "highlighted location" marker color for when the user
     // mouses over the marker.
-    var highlightedIcon = makeMarkerIcon('FFFF24');
+    var highlightedIcon = this.makeMarkerIcon('FFFF24');
 
     // Create markers for breweries
     for (var i = 0; i < model.initialBreweries.length; i++) {
@@ -136,7 +136,7 @@ var viewmodel = {
         this.setIcon(defaultIcon);
       });
     }
-
+    // Call the showlisting functions to display the markers on the map
     this.showListings();
 
   },
@@ -152,6 +152,7 @@ var viewmodel = {
     map.fitBounds(bounds);
   },
 
+  // THIS  IS IN PROGRESS
   filterListings: function() {
     var input, filtervalue, i;
     input = document.getElementById("searchInput");
@@ -211,29 +212,28 @@ var viewmodel = {
       yelpInfo();
       infowindow.open(map, marker);
     }
+  },
+
+// This function will loop through the listings and hide them all.
+  hideMarkers: function(markers) {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+  },
+
+  // This function takes in a COLOR, and then creates a new marker
+  // icon of that color.
+  makeMarkerIcon: function(markerColor) {
+    var markerImage = new google.maps.MarkerImage(
+      'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+      '|40|_|%E2%80%A2',
+      new google.maps.Size(21, 34),
+      new google.maps.Point(0, 0),
+      new google.maps.Point(10, 34),
+      new google.maps.Size(21,34));
+    return markerImage;
   }
 }
 
-
-// This function will loop through the listings and hide them all.
-function hideMarkers(markers) {
-for (var i = 0; i < markers.length; i++) {
-  markers[i].setMap(null);
-}
-}
-
-// This function takes in a COLOR, and then creates a new marker
-// icon of that color. The icon will be 21 px wide by 34 high, have an origin
-// of 0, 0 and be anchored at 10, 34).
-function makeMarkerIcon(markerColor) {
-var markerImage = new google.maps.MarkerImage(
-  'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
-  '|40|_|%E2%80%A2',
-  new google.maps.Size(21, 34),
-  new google.maps.Point(0, 0),
-  new google.maps.Point(10, 34),
-  new google.maps.Size(21,34));
-return markerImage;
-}
-
+// Get this thing started!
 ko.applyBindings(new viewmodel.init());
