@@ -23,17 +23,13 @@
                 <div class="search-container">
                     <form action="/action_page.php">
                         <!-- Type-ahead filtering, binding input to KO var filterValue -->
-                        <input type="text" id="searchInput" data-bind="value:filterValue, valueUpdate: 'afterkeydown'" onkeyup="vm.showMarkers()" placeholder="Filter by..." name="search">
+                        <input type="text" id="searchInput" data-bind="value:filterValue, valueUpdate: 'afterkeydown'" onkeyup="vm.showMarkers()" placeholder="Enter text to filter..." name="search">
                     </form>
                  </div>
             </div>
            <!--  bind the list to the filtered KO array -->
             <ul data-bind="foreach: filteredBreweryList" class="menu-section-list">
                 <li data-bind="text: breweryName, click: $parent.listpopulatesInfoWindow"></li>
-<!--
-                <li data-bind="text: breweryName, click: vm.populateInfoWindow(markers[breweryid], largeInfowindow)"></li> -->
-
-
             </ul>
           </section>
         </nav>

@@ -82,8 +82,6 @@ var viewmodel = function(){
       var newList = self.breweryList().filter(function(brewery){
         return (brewery.breweryName.toLowerCase().indexOf(self.filterValue().toLowerCase())>-1);
       });
-      // console.log(filteredBreweryList().breweryName);
-      // self.showMarkers();
       return newList
     }
   });

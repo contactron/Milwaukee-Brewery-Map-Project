@@ -53,36 +53,20 @@ body,
  */
 
 .filterbox {
-  overflow: hidden;
+/*  overflow: hidden;*/
   background-color: #ddd;
 }
 
 .filterbox .search-container {
-  float: right;
-  padding: 8px;
-  width: 80%;
+  padding: 10px 35px 10px 20px;
   margin: 0 auto;
 }
 
 .filterbox input[type=text]{
-  padding: 6px;
+  padding: 8px;
   font-size: 16px;
   border: none;
-  width: 60%;
-  float: left;
-}
-
-.filterbox .innerdiv {
   width: 100%;
-  margin: 0 auto;
-}
-
-.filterbox .filtericon {
-  float: left;
-  display: inline;
-  width: 28px;
-  padding: 1px;
-  background-color: #aaa;
 }
 
 
