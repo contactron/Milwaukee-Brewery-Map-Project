@@ -82,9 +82,8 @@ var viewmodel = {
     model.initialBreweries.forEach(function(breweryItem) {
       self.breweryList.push(new model.Brewery(breweryItem));
       });
-    console.log(self.breweryList());  //works
-    console.dir('self = ' + self);
-    console.dir('this = ' + this);
+    console.log(self.breweryList()[0].breweryName());  // Works! Displays the first brewery name.
+    // console.log(viewmodel.breweryList()[0].breweryName());  // This fails
   },
 
   initMap: function() {
@@ -193,7 +192,6 @@ var viewmodel = {
         // var yelp_search_url = cors_anywhere_url + "https://api.yelp.com/v3/businesses/lakefront-brewery-milwaukee";
         var business = marker.yelpid;
         var yelp_url = yelpbase_url + business;
-        console.log(yelp_url);
         $.ajax({
           url: yelp_url,
           beforeSend: function(xhr){
