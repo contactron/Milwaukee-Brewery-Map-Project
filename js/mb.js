@@ -98,6 +98,12 @@ var viewmodel = function(){
       zoom: 13,
       mapTypeControl: false
     });
+    // Have the map center and resize when the window is resized.
+    google.maps.event.addDomListener(window, "resize", function() {
+     var center = map.getCenter();
+     google.maps.event.trigger(map, "resize");
+     map.setCenter(center);
+    });
     // Creat infowindow to be applied to markers
     largeInfowindow = new google.maps.InfoWindow();
 
