@@ -32,5 +32,5 @@ https://github.com/builderLabs/Yelp-Fusion-JavaScript/blob/master/yelpFusionJS.m
 as well as everyone who contributed to the Udacity Forum thread discussing the Yelp Fusion API:
 https://discussions.udacity.com/t/yelp-v3-implementation/235928/39
 
-Finally, I got some great help structuring my code from the Udacity forums.
+Finally, I got some great help structuring my code from the Udacity forum for this project. My thanks in particular to Viraj-3 who provided some great feedback and got me on a better path.
 
