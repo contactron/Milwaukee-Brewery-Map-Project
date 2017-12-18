@@ -23,7 +23,8 @@
                 <div class="search-container">
                     <form action="/action_page.php">
                         <!-- Type-ahead filtering, binding input to KO var filterValue -->
-                        <input type="text" id="searchInput" data-bind="value:filterValue, valueUpdate: 'afterkeydown'" onkeyup="vm.showMarkers()" placeholder="Enter text to filter..." name="search">
+                        <!-- Also, listener to update markers  -->
+                        <input type="text" id="searchInput" data-bind="value:filterKeyword, valueUpdate: 'afterkeydown'" onkeyup="vm.showMarkers()" placeholder="Enter text to filter..." name="search">
                     </form>
                  </div>
             </div>
@@ -52,7 +53,7 @@
         <!-- Load Core Javascript -->
         <script async defer
             src=
-            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=initMap">
+            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=vm.initMap">
         </script>
 
     </body>
