@@ -47,8 +47,13 @@
         <!-- Load Core Javascript -->
         <script async defer
             src=
-            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=vm.initMap">
+            "https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAdkv8cWmJKMSYSpCy7X5MLr2a1AYjh4Us&v=3&callback=vm.initMap" onerror="googleError()">
         </script>
-
+        <!-- Display error message if Google call fail -->s
+        <script>
+            function googleError () {
+                document.getElementById('map').innerHTML = "<p>Sorry, it appears Google is not available at this time.<p>";
+            }
+        </script>
     </body>
 </html>

@@ -99,6 +99,14 @@ position:absolute;
 right:0;
 }
 
+#map p {
+text-align:center;
+color:#616f87;
+font-weight:700;
+font-size:28px;
+
+}
+
 .infobox {
 width:250px;
 height:200px;
