@@ -5,15 +5,13 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Milwaukee Breweries</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Load Jquery libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js'></script>
-
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,700">
+        <!-- Load Knockout libraries -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
         <link rel="stylesheet" href="css/style.css">
-
     </head>
     <body>
-
         <!-- Slide out menu -->
         <nav id="menu" class="menu">
         <!-- Section with links -->
@@ -28,23 +26,19 @@
                     </form>
                  </div>
             </div>
-           <!--  bind the list to the filtered KO array -->
+           <!--  Bind the list to the filtered KO array -->
             <ul data-bind="foreach: filteredBreweryList" class="menu-section-list">
                 <li data-bind="text: breweryName, click: $parent.listpopulatesInfoWindow"></li>
             </ul>
           </section>
         </nav>
-
         <main id="main" class="panel">
-
             <header class="panel-header">
                 <!-- Hamburger -->
-                <svg class="svg-hamburger js-slideout-toggle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M92.03 25h-84c-1.66 0-3-1.34-3-3V8c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.66-1.34 3-3 3zM92.03 59.94h-84c-1.66 0-3-1.34-3-3v-14c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.65-1.34 3-3 3zM92.03 94.88h-84c-1.66 0-3-1.35-3-3v-14c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.65-1.34 3-3 3z"/></svg>
+                <svg class="svg-hamburger js-slideout-toggle" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100"><path d="M92.03 25h-84c-1.66 0-3-1.34-3-3V8c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.66-1.34 3-3 3zM92.03 59.94h-84c-1.66 0-3-1.34-3-3v-14c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.65-1.34 3-3 3zM92.03 94.88h-84c-1.66 0-3-1.35-3-3v-14c0-1.66 1.34-3 3-3h84c1.66 0 3 1.34 3 3v14c0 1.65-1.34 3-3 3z"/></svg>
             </header>
-
             <!-- Google Map Section -->
             <div id="map"></div>
-
         </main>
         <!-- Load required Google Map APIs -->
         <script src="js/mb.js"></script>
