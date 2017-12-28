@@ -108,20 +108,64 @@ font-size:28px;
 }
 
 .infobox {
-width:250px;
-height:200px;
+/*      overflow:hidden;*/
+margin: auto;
+width: 250px;
+height:auto;
+overflow:auto;
+padding: 4px;
+text-align: center;
 }
 
 .infotitle {
 text-transform:uppercase;
-color:#85888d;
+color:#888;
 font-weight:700;
 font-size:18px;
-text-align:center;
+margin-bottom: 8px;
 }
 
 .infopicture {
-margin-top:8px;
+margin-top:3px;
+width: 250px;
+height:170px;
+object-fit:cover;
+}
+
+.otherinfo {
+margin-bottom:8px;
+margin-top: 4px;
+}
+
+address {
+color: #777;
+line-height: 1.25;
+font-style: normal;
+margin-top: 8px;
+}
+
+.bizurl {
+text-decoration: none;
+color: #0044cc;
+font-size: 14px;
+}
+
+.infobutton {
+display: block;
+margin: 16px auto 8px auto;
+border-radius: 20px;
+border-style: solid;
+border-width: 1px;
+border-color: #ccc;
+background: #eee;
+padding: 4px 20px;
+width: 100px;
+/*height: 20px;*/
+text-align: center;
+font-size: 12px;
+text-transform: uppercase;
+text-decoration: none;
+font-weight: 500;
 }
 
 .spinner {

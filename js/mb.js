@@ -232,7 +232,27 @@ var viewmodel = function(){
           },
           // Populate info window with business name and image
           }).done(function(response){
-            infowindow.setContent('<div><span class="infotitle">' + marker.title + '</span><div class="infobox"><img class="infopicture" src="' + response.image_url +'" width="250">');
+            console.log(response);
+            // Build content for initial infobox
+            var iwcontent1 = '<div class="infobox"><span class="infotitle">' + marker.title + '</span><div class="otherinfo"><img class="infopicture" src="' + response.image_url + '"></div><a href="" class="infobutton">More Info</a></div>'
+
+            // Build content for more infobox
+            // Create url for correct star review image
+            var ystars = 'small_' + response.rating;
+            ystars = ystars.replace(".", "") + '.png';
+            console.log(ystars);
+            // var rating = response.rating.replace(".","");
+
+            // // Remove the "." for in half ratings like 4.5
+            // rating = rating.replace(".", "");
+            // // Build the full image URL
+            // var ystars = 'small_' + rating + '.png';
+
+            // Build the address to display
+            var yaddressphone = response.location.display_address[0] + '<br>' + response.location.display_address[1] + '<br>' + response.display_phone;
+            // Build full content for moreinfobox
+            var iwcontent2 = '<div class="infobox"><span class="infotitle">' + marker.title + '</span><div class="otherinfo"><img class="inforating" src="img/yelpstars/' + ystars + '"><address>' + yaddressphone + '</address><a class="bizurl" href="' + response.url + '">website</a></div><a href="" class="infobutton">Less Info</a></div>';
+            infowindow.setContent(iwcontent2);
           }).fail(function(error, textStatus, errorThrown){
             // Display error message if yelp call fails.
             infowindow.setContent('<div> Sorry, Yelp! appears to be down.</div>');
