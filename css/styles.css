@@ -113,7 +113,7 @@ margin: auto;
 width: 250px;
 height:auto;
 overflow:auto;
-padding: 4px;
+padding: 4px 0px 4px 22px;
 text-align: center;
 }
 
@@ -128,16 +128,26 @@ margin-bottom: 8px;
 .infopicture {
 margin-top:3px;
 width: 250px;
-height:170px;
+height:150px;
 object-fit:cover;
 }
 
+.inforating {
+width:82px;
+}
+
 .otherinfo {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height:155px;
 margin-bottom:8px;
 margin-top: 4px;
 }
 
 address {
+font-size: 16px;
 color: #777;
 line-height: 1.25;
 font-style: normal;
@@ -147,7 +157,7 @@ margin-top: 8px;
 .bizurl {
 text-decoration: none;
 color: #0044cc;
-font-size: 14px;
+font-size: 16px;
 }
 
 .infobutton {
@@ -170,9 +180,7 @@ font-weight: 500;
 
 .spinner {
 width:100px;
-padding-top:40px;
-display:block;
-margin:0 auto;
+/*padding-left:8px;*/
 }
 
 /**
