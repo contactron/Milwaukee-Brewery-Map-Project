@@ -167,7 +167,7 @@ border-radius: 20px;
 border-style: solid;
 border-width: 1px;
 border-color: #ccc;
-background: #eee;
+background: #ddd;
 padding: 4px 20px;
 width: 100px;
 /*height: 20px;*/
@@ -176,6 +176,12 @@ font-size: 12px;
 text-transform: uppercase;
 text-decoration: none;
 font-weight: 500;
+}
+
+.infobutton:hover {
+background: #eee;
+border-color: #aaa;
+cursor: pointer;
 }
 
 .spinner {

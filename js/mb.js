@@ -205,7 +205,10 @@ var viewmodel = function(){
 
   // Toggle between the main content and secondary content when clicking view more/less
   self.toggleInfoWindowContents = function(newcontent, infoWindow) {
-    infoWindow.setContent(newcontent);
+    $(".infobox").fadeOut(250, function() {
+      infoWindow.setContent(newcontent);
+      $(".infobox").fadeIn(250);
+      });
   };
 
   // Populate the infowindow when the marker is clicked
