@@ -90,6 +90,15 @@ var viewmodel = function(){
     }
   };
 
+// Slideout menu functions
+  self.openNav = function() {
+    document.getElementById("mySidenav").style.width = "250px";
+  };
+
+  self.closeNav = function() {
+      document.getElementById("mySidenav").style.width = "0";
+  };
+
   // Create the map.
   self.initMap = function() {
     // Constructor creates a new map - only center and zoom are required.
